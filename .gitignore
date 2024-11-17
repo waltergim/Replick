@@ -1,0 +1,8 @@
+# Ignorar configuraciones sensibles
+.env
+
+# Ignorar dependencias
+node_modules/
+
+# Otros archivos o carpetas a ignorar
+*.log
