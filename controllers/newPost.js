@@ -119,7 +119,7 @@ const getPost = async (req, res) => {
 // recogemos todos los posts
 const getPosts = async (req, res) => {
   try {
-    const posts = await Post.find().limit(2);
+    const posts = await Post.find().limit(3);
     return res.status(200).send({
       message: "Posts obtenidos con éxito",
       posts,
