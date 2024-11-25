@@ -8,6 +8,7 @@ const PostSchema = new Schema({
     content: {type: String, required: true},
     image: {type: String, required: true},
     user : {type: Schema.Types.ObjectId, ref: 'User'},
+    role: {type: String, required: true },
     date : {type: Date, default: Date.now}
     })
 

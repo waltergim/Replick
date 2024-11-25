@@ -4,7 +4,7 @@ const {
   updatePost,
   deletePost,
   getPost,
-  getPosts,
+ getPosts
 } = require("../controllers/newPost");
 
 const { check } = require("express-validator");
@@ -17,10 +17,21 @@ const authenticate = require("../middlewares/authenticate ");
 // creo el router para poder realizar las rutas
 const router = express.Router();
 
-// creo las rutas para el servidor
-router.get("/", getPosts);
+// recibo el objeto de la base de datos
+router.get("/:role", getPosts)
+ 
+ 
+
+
+
+
+
+
+
 
 router.get("/:id", getPost);
+
+
 
 
 
@@ -33,6 +44,7 @@ router.post(
     check("title", "El titulo es obligatirio").not().isEmpty(),
     check("subtitle", "El subtitle es obligatoria").not().isEmpty(),
     check("content", "El contenido es obligatorio").not().isEmpty(),
+    check("roke", "El rol es obligatoria").not().isEmpty(),
     check("image", "La imagen es obligatoria").not().isEmpty(),
   ],
 // se validan los datos
