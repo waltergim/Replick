@@ -44,7 +44,7 @@ router.post(
     check("title", "El titulo es obligatirio").not().isEmpty(),
     check("subtitle", "El subtitle es obligatoria").not().isEmpty(),
     check("content", "El contenido es obligatorio").not().isEmpty(),
-    check("roke", "El rol es obligatoria").not().isEmpty(),
+    check("role", "El rol es obligatoria").not().isEmpty(),
     check("image", "La imagen es obligatoria").not().isEmpty(),
   ],
 // se validan los datos
