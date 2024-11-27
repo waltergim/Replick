@@ -8,7 +8,9 @@ const app = express();
 const port = 3100;
 
 // configuraciones extrass
+
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 

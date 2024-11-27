@@ -6,6 +6,7 @@ const {
   getPost,
  getPosts
 } = require("../controllers/newPost");
+ 
 
 const { check } = require("express-validator");
 
@@ -13,6 +14,9 @@ const express = require("express");
 
 const validarDatos = require("../middlewares/validarDatos");
 const authenticate = require("../middlewares/authenticate ");
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
+
 
 // creo el router para poder realizar las rutas
 const router = express.Router();
@@ -39,13 +43,13 @@ router.get("/:id", getPost);
 // rutas protegidas
 router.post(
   "/new",
+  upload.single('image'),
 // se realiza una small conprovacion de datos
   [
     check("title", "El titulo es obligatirio").not().isEmpty(),
     check("subtitle", "El subtitle es obligatoria").not().isEmpty(),
     check("content", "El contenido es obligatorio").not().isEmpty(),
     check("role", "El rol es obligatoria").not().isEmpty(),
-    check("image", "La imagen es obligatoria").not().isEmpty(),
   ],
 // se validan los datos
   validarDatos
