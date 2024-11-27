@@ -2,6 +2,7 @@
 const express = require('express');
 const conexion = require('./config/conexion');
 const cors = require('cors');
+const path = require('path');
 
 // Realizo la configuracion de la ruta y la app
 const app = express();
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
 
 
 app.use('/api/post', require('./routers/newPost'))
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 // Conecto la app 
