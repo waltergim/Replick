@@ -1,15 +1,16 @@
 // importamos las dependencias necesarias
 const Post = require("../models/Post");
-const fs = require("fs");
-const path = require("path");
+ const fs = require("fs");
  
 
 const createPost = async (req, res) => {
   try {
  
     const { title, subtitle, content, role } = req.body;
-    const image = req.file;
-
+    const file = req.file
+    const image =  `./uploads/${file.originalname}`;
+    fs.renameSync(file.path , image)
+ 
     if (!title || !subtitle || !content || !image || !role) {
       return res.status(400).send({
         message: "Faltan datos por enviar",
@@ -24,20 +25,14 @@ const createPost = async (req, res) => {
         ok: false,
       });
     }
+  
 
-    const uploadDir = path.join(__dirname, "uploads");
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir);
-    }
-
-    const newPath = path.join(uploadDir, image.filename);
-    fs.renameSync(image.path, newPath);
 
     const post = new Post({
       title,
       subtitle,
       content,
-      image: newPath,
+      image,
       role,
     });
 
