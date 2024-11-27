@@ -8,7 +8,7 @@ const createPost = async (req, res) => {
  
     const { title, subtitle, content, role } = req.body;
     const file = req.file
-    const image =  `./uploads/${file.originalname}`;
+    let image =  `./uploads/${file.originalname}`;
     fs.renameSync(file.path , image)
  
     if (!title || !subtitle || !content || !image || !role) {
@@ -25,7 +25,7 @@ const createPost = async (req, res) => {
         ok: false,
       });
     }
-  
+    image = `https://replick-1.onrender.com/uploads/${file.originalname}`;
 
 
     const post = new Post({
