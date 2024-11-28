@@ -1,7 +1,11 @@
 // importamos las dependencias necesarias
+require("dotenv").config();
 const Post = require("../models/Post");
  const fs = require("fs");
+const cloudinary = require("cloudinary").v2;
+
  
+
 
 const createPost = async (req, res) => {
   try {
@@ -10,6 +14,14 @@ const createPost = async (req, res) => {
     const file = req.file
     let image =  `./uploads/${file.originalname}`;
     fs.renameSync(file.path , image)
+
+    cloudinary.config ({
+      cloud_name: process.env.CLOUD_NAME,
+      api_key: process.env.API_KEY,
+      api_secret: process.env.API_SECRET
+      })
+      const uploadsImage = await cloudinary.uploader.upload(image); 
+     
  
     if (!title || !subtitle || !content || !image || !role) {
       return res.status(400).send({
@@ -25,15 +37,16 @@ const createPost = async (req, res) => {
         ok: false,
       });
     }
-    image = `https://replick-1.onrender.com/uploads/${file.originalname}`;
-
-
+    
+    
+    image = uploadsImage.secure_url;
+ 
     const post = new Post({
       title,
       subtitle,
       content,
       image,
-      role,
+      role: role.toLowerCase(),
     });
 
     await post.save();
