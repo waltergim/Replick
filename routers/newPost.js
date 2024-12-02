@@ -43,7 +43,7 @@ router.get("/:role", getPosts)
 
 
 
-router.get("/:id", getPost);
+router.get("/id/:id", getPost);
 
 
 

@@ -3,7 +3,6 @@ require("dotenv").config();
 const Post = require("../models/Post");
  const fs = require("fs");
 const cloudinary = require("cloudinary").v2;
-
  
 
 
@@ -109,14 +108,25 @@ const updatePost = async (req, res) => {
 // recuperamos un post en particular
 const getPost = async (req, res) => {
   try {
-    const postId = req.params.id;
+    const postId = req.params.id.trim(); // Limpia espacios y saltos de línea si los hay
+
+    // Validar que el ID sea un ObjectId válido
+    if (!postId) {
+      return res.status(400).send({
+        message: "ID inválido proporcionado",
+        ok: false,
+      });
+    }
+
     const post = await Post.findById(postId);
+
     if (!post) {
       return res.status(404).send({
         message: "Post no encontrado",
         ok: false,
       });
     }
+
     return res.status(200).send({
       message: "Post encontrado con éxito",
       post,
@@ -124,7 +134,7 @@ const getPost = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).send({
+    return res.status(500).send({
       message: "Error al obtener el post",
       ok: false,
     });
