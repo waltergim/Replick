@@ -147,8 +147,9 @@ const getPosts = async (req, res) => {
   try {
     const { role } = req.params;
 
+   
     // Verificar si el role es válido
-    const validRoles = ["primera", "acenso", "seleccion"];
+    const validRoles = ["primera","acenso","internacional","seleccion"];
     const limit = validRoles.includes(role) ? 15 : 3;
 
     // Consultar los posts con el límite definido
