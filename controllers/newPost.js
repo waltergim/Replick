@@ -152,7 +152,7 @@ const getPosts = async (req, res) => {
     }
 
     // Si se proporciona `role`, verificar que sea válido
-    const validRoles = ["primera", "acenso", "internacional", "seleccion"];
+    const validRoles = ["primera", "ascenso", "internacional", "seleccion"];
     if (!validRoles.includes(role)) {
       return res.status(400).send({
         message: "Role no válido",
