@@ -141,29 +141,34 @@ const getPosts = async (req, res) => {
   try {
     const { role } = req.params;
 
-    // Verificar si el role es válido
+    // Si no se proporciona `role`, devolver los últimos posts generales
     if (!role) {
-      const validRoles = ["primera", "acenso", "internacional", "seleccion"];
-      const limit = validRoles.includes(role) ? 15 : 3;
-  
-      // Consultar los posts con el límite definido
-      const posts = await Post.find({ role }).limit(limit).sort({ _id: -1 });
-  
+      const posts = await Post.find().limit(6).sort({ _id: -1 });
       return res.status(200).send({
         message: "Posts encontrados con éxito",
         posts,
         ok: true,
       });
     }
-  
 
-    const post = await Post.find().limit(6).sort({ _id: -1 });
-    return res.status(200).send({
-      message: "Posts encontrados con éxito", post, 
-      ok: true
+    // Si se proporciona `role`, verificar que sea válido
+    const validRoles = ["primera", "acenso", "internacional", "seleccion"];
+    if (!validRoles.includes(role)) {
+      return res.status(400).send({
+        message: "Role no válido",
+        ok: false,
       });
+    }
 
- 
+    // Consultar los posts según el `role`
+    const limit = role === "primera" ? 15 : 3; // Ajustar el límite según el role
+    const posts = await Post.find({ role }).limit(limit).sort({ _id: -1 });
+
+    return res.status(200).send({
+      message: "Posts encontrados con éxito",
+      posts,
+      ok: true,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send({
