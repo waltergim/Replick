@@ -142,17 +142,28 @@ const getPosts = async (req, res) => {
     const { role } = req.params;
 
     // Verificar si el role es válido
-    const validRoles = ["primera", "acenso", "internacional", "seleccion"];
-    const limit = validRoles.includes(role) ? 15 : 3;
+    if (!role) {
+      const validRoles = ["primera", "acenso", "internacional", "seleccion"];
+      const limit = validRoles.includes(role) ? 15 : 3;
+  
+      // Consultar los posts con el límite definido
+      const posts = await Post.find({ role }).limit(limit).sort({ _id: -1 });
+  
+      return res.status(200).send({
+        message: "Posts encontrados con éxito",
+        posts,
+        ok: true,
+      });
+    }
+  
 
-    // Consultar los posts con el límite definido
-    const posts = await Post.find({ role }).limit(limit).sort({ _id: -1 });
-
+    const post = await Post.find().limit(6).sort({ _id: -1 });
     return res.status(200).send({
-      message: "Posts encontrados con éxito",
-      posts,
-      ok: true,
-    });
+      message: "Posts encontrados con éxito", post, 
+      ok: true
+      });
+
+ 
   } catch (error) {
     console.error(error);
     res.status(500).send({
@@ -162,25 +173,7 @@ const getPosts = async (req, res) => {
   }
 };
 
-const getAlgunospost = async (req, res) => {
-  try {
-    const { role } = req.params;
-    const vlidarRoles = ["ultimasnoticias", "internacional"];
-    const limit = vlidarRoles.includes(role) ? 6 : 6;
-    const posts = await Post.find({ role }).limit(limit).sort({ _id: -1 });
-    return res.status(200).send({
-      message: "Posts encontrados con éxito",
-      posts,
-      ok: true,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({
-      message: "Error al obtener los posts",
-      ok: false,
-    });
-  }
-};
+ 
 
 // Eliminamos los post selecionados por el id
 const deletePost = async (req, res) => {
@@ -213,5 +206,5 @@ module.exports = {
   deletePost,
   getPost,
   getPosts,
-  getAlgunospost,
+ 
 };

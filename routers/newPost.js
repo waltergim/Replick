@@ -33,8 +33,8 @@ const router = express.Router();
  
 
 // recibo el objeto de la base de datos
-router.get("/:role", getPosts)
-router.get("/:role", getAlgunospost)
+router.get("/:role?", getPosts)
+ 
  
 
 
