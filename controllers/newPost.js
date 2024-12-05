@@ -1,27 +1,23 @@
 // importamos las dependencias necesarias
 require("dotenv").config();
 const Post = require("../models/Post");
- const fs = require("fs");
+const fs = require("fs");
 const cloudinary = require("cloudinary").v2;
- 
-
 
 const createPost = async (req, res) => {
   try {
- 
     const { title, subtitle, content, role } = req.body;
-    const file = req.file
-    let image =  `./uploads/${file.originalname}`;
-    fs.renameSync(file.path , image)
+    const file = req.file;
+    let image = `./uploads/${file.originalname}`;
+    fs.renameSync(file.path, image);
 
-    cloudinary.config ({
+    cloudinary.config({
       cloud_name: process.env.CLOUD_NAME,
       api_key: process.env.API_KEY,
-      api_secret: process.env.API_SECRET
-      })
-      const uploadsImage = await cloudinary.uploader.upload(image); 
-     
- 
+      api_secret: process.env.API_SECRET,
+    });
+    const uploadsImage = await cloudinary.uploader.upload(image);
+
     if (!title || !subtitle || !content || !image || !role) {
       return res.status(400).send({
         message: "Faltan datos por enviar",
@@ -36,10 +32,9 @@ const createPost = async (req, res) => {
         ok: false,
       });
     }
-    
-    
+
     image = uploadsImage.secure_url;
- 
+
     const post = new Post({
       title,
       subtitle,
@@ -63,7 +58,6 @@ const createPost = async (req, res) => {
     });
   }
 };
-
 
 // updateamos los post
 const updatePost = async (req, res) => {
@@ -147,9 +141,8 @@ const getPosts = async (req, res) => {
   try {
     const { role } = req.params;
 
-   
     // Verificar si el role es válido
-    const validRoles = ["primera","acenso","internacional","seleccion"];
+    const validRoles = ["primera", "acenso", "internacional", "seleccion"];
     const limit = validRoles.includes(role) ? 15 : 3;
 
     // Consultar los posts con el límite definido
@@ -160,7 +153,26 @@ const getPosts = async (req, res) => {
       posts,
       ok: true,
     });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({
+      message: "Error al obtener los posts",
+      ok: false,
+    });
+  }
+};
 
+const getAlgunospost = async (req, res) => {
+  try {
+    const { role } = req.params;
+    const vlidarRoles = ["ultimasnoticias", "internacional"];
+    const limit = vlidarRoles.includes(role) ? 6 : 6;
+    const posts = await Post.find({ role }).limit(limit).sort({ _id: -1 });
+    return res.status(200).send({
+      message: "Posts encontrados con éxito",
+      posts,
+      ok: true,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send({
@@ -201,4 +213,5 @@ module.exports = {
   deletePost,
   getPost,
   getPosts,
+  getAlgunospost,
 };

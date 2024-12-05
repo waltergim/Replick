@@ -4,7 +4,8 @@ const {
   updatePost,
   deletePost,
   getPost,
- getPosts
+ getPosts,
+ getAlgunospost
 } = require("../controllers/newPost");
  
 
@@ -33,7 +34,7 @@ const router = express.Router();
 
 // recibo el objeto de la base de datos
 router.get("/:role", getPosts)
- 
+router.get("/:role", getAlgunospost)
  
 
 
