@@ -40,6 +40,7 @@ const createPost = async (req, res) => {
       subtitle,
       content,
       image,
+      private: true,
       role: role.toLowerCase(),
     });
 
