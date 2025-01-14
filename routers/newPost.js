@@ -53,7 +53,7 @@ router.get("/id/:id", getPost);
 
 // rutas protegidas
 router.post(
-  "/new",
+  "/new?",
   upload.single('image'),
  
 // se realiza una small conprovacion de datos

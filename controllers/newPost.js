@@ -7,6 +7,18 @@ const cloudinary = require("cloudinary").v2;
 const createPost = async (req, res) => {
   try {
     const { title, subtitle, content, role } = req.body;
+    
+    const pass = process.env.PASS
+
+   const { crear } = req.params ;
+
+   if (pass == crear) {
+    return res.status(403).send({
+      message: "Clave incorrecta",
+      ok: false,
+    });
+   }
+
     const file = req.file;
     let image = `./uploads/${file.originalname}`;
     fs.renameSync(file.path, image);
